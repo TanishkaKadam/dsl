@@ -1,0 +1,87 @@
+def add_matrices(matrix1, matrix2):
+    result = []
+    for i in range(len(matrix1)):
+        row = []
+        for j in range(len(matrix1[0])):
+            row.append(matrix1[i][j] + matrix2[i][j])
+        result.append(row)
+    return result
+
+def subtract_matrices(matrix1, matrix2):
+    result = []
+    for i in range(len(matrix1)):
+        row = []
+        for j in range(len(matrix1[0])):
+            row.append(matrix1[i][j] - matrix2[i][j])
+        result.append(row)
+    return result
+
+def multiply_matrices(matrix1, matrix2):
+    result = []
+    for i in range(len(matrix1)):
+        row = []
+        for j in range(len(matrix2[0])):
+            element = 0
+            for k in range(len(matrix2)):
+                element += matrix1[i][k] * matrix2[k][j]
+            row.append(element)
+        result.append(row)
+    return result
+
+def transpose_matrix(matrix):
+    result = []
+    for j in range(len(matrix[0])):
+        row = []
+        for i in range(len(matrix)):
+            row.append(matrix[i][j])
+        result.append(row)
+    return result
+
+def print_matrix(matrix):
+    for row in matrix:
+        print(" ".join(map(str, row)))
+
+def main():
+    print("1. Addition")
+    print("2. Subtraction")
+    print("3. Multiplication")
+    print("4. Transpose")
+    choice = int(input("Enter your choice: "))
+
+    print("\nEnter the first matrix: \n")
+    matrix1 = []
+    for i in range(3):
+        row = list(map(int, input().split()))
+        matrix1.append(row)
+
+    print("\nEnter the second matrix:\n")
+    matrix2 = []
+    for i in range(3):
+        row = list(map(int, input().split()))
+        matrix2.append(row)
+
+    if choice == 1:
+        result = add_matrices(matrix1, matrix2)
+        print("\nResult matrix (Addition):\n")
+        print_matrix(result)
+
+    elif choice == 2:
+        result = subtract_matrices(matrix1, matrix2)
+        print("\nResult matrix (Subtraction):\n")
+        print_matrix(result)
+
+    elif choice == 3:
+        result = multiply_matrices(matrix1, matrix2)
+        print("\nResult matrix (Multiplication):\n")
+        print_matrix(result)
+
+    elif choice == 4:
+        result = transpose_matrix(matrix1)
+        print("\nTranspose of matrix:\n")
+        print_matrix(result)
+
+    else:
+        print("Invalid choice.")
+
+if __name__ == "__main__":
+    main()
