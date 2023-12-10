@@ -1,27 +1,29 @@
-def main():
+balance=0
 
-        n = int(input("Enter the number of students: "))
+print("1. deposit")
+print("2, withdraw")
+print("3. balance")
 
-        scores = [int(input(f"Enter the score of student {i + 1}: ")) for i in range(n)]
+r=1
+while r:
 
-        avg = sum(scores) / n 
-        highest = max(scores) 
-        lowest = min(scores)
-        absent_count = scores.count(0)
-        most_frequent = max(set(scores),  key=scores.count)
+    choice=int(input("Select your  choice:"))
 
-        print(f"Average score of the class: {avg:.3f}")
+    if choice==1:
+   	 amount= int(input("Enter the amount:"))
+   	 balance+= amount
+   	 print("Remaining balance:", balance)
+    elif choice==2:
+   	 withdraw = int(input("Enter withdraw amount:"))
+   	 if withdraw>balance:
+   		 print("Withdraw is not possible:")
+   	 else:
+   		 balance-=withdraw
+   		 print("balance")
 
-        print(f"Highest score: {highest}")
+    else:
+   	 print("Your balance is:", balance)
 
-        print(f"Lowest score: {lowest}")
-
-        print(f"Number of absent students: {absent_count}")
-
-        print(f"Score with the highest frequency: {most_frequent}")
+    r=int(input("Would you like to continue (1/0)"))
 
 
-
-if __name__ == "__main__":
-
-    main()
