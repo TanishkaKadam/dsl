@@ -1,0 +1,54 @@
+def store_percentages():
+  
+  num_students = int(input("Enter the number of students: "))
+  percentages = []
+  for i in range(num_students):
+    student_percentage = float(
+        input(f"Enter the percentage of student {i + 1}: ")
+    )
+    percentages.append(student_percentage)
+  return percentages
+
+def selection_sort(arr):
+
+  n = len(arr)
+  for i in range(n):
+    min_idx = i
+    for j in range(i + 1, n):
+      if arr[min_idx] > arr[j]:
+        min_idx = j
+    if min_idx != i:
+      arr[i], arr[min_idx] = arr[min_idx], arr[i]
+  return arr
+
+def bubble_sort(arr):
+
+  n = len(arr)
+  for i in range(n):
+    swapped = False
+    for j in range(0, n - i - 1):
+      if arr[j] > arr[j + 1]:
+        arr[j], arr[j + 1] = arr[j + 1], arr[j]
+        swapped = True
+    if not swapped:
+      break
+  return arr
+
+def display_top_scores(arr, top_n):
+ 
+  sorted_arr = sorted(arr.copy(), reverse=True)
+  print(f"Top {top_n} Scores:")
+  for i in range(top_n):
+    print(sorted_arr[i])
+
+
+percentages = store_percentages()
+
+
+sorted_selection = selection_sort(percentages.copy())
+
+
+sorted_bubble = bubble_sort(percentages.copy())
+
+
+display_top_scores(percentages, 5)
