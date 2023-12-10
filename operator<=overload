@@ -1,0 +1,105 @@
+#include <iostream>
+
+#include <cstdio>
+
+#include <cstring>
+
+#include <cstdlib>
+
+using namespace std;
+
+struct Node {
+  int priority;
+  int info;
+  Node* next;
+};
+
+class PriorityQueue {
+private:
+  // Define a front pointer named "front" and initialize it to NULL.
+  Node* front = nullptr;
+
+public:
+  PriorityQueue() {
+    front = nullptr;
+  }
+
+  void insert(int item, int priority) {
+    Node* new_node = new Node;
+    new_node->info = item;
+    new_node->priority = priority;
+
+    if (!front || priority < front->priority) {
+      new_node->next = front;
+      front = new_node;
+    } else {
+      Node* curr = front;
+      while (curr->next && curr->next->priority <= priority) {
+        curr = curr->next;
+      }
+      new_node->next = curr->next;
+      curr->next = new_node;
+    }
+  }
+
+  void del() {
+    if (!front) {
+      cout << "Queue Underflow\n";
+    } else {
+      Node* temp = front;
+      cout << "Deleted item is: " << temp->info << endl;
+      front = front->next;
+      delete temp;
+    }
+  }
+
+  void show() {
+    Node* ptr = front;
+    if (!front) {
+      cout << "Queue is empty\n";
+    } else {
+      cout << "Queue is :\n";
+      cout << "Priority Item\n";
+      while (ptr) {
+        cout << ptr->priority << " " << ptr->info << endl;
+        ptr = ptr->next;
+      }
+    }
+  }
+};
+
+int main() {
+  int choice, item, priority;
+  PriorityQueue pq;
+
+  do {
+    cout << "1. Insert\n";
+    cout << "2. Delete\n";
+    cout << "3. Display\n";
+    cout << "4. Exit\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch (choice) {
+      case 1:
+        cout << "Input the item value to be added in the queue: ";
+        cin >> item;
+        cout << "Enter its priority: ";
+        cin >> priority;
+        pq.insert(item, priority);
+        break;
+      case 2:
+        pq.del();
+        break;
+      case 3:
+        pq.show();
+        break;
+      case 4:
+        break;
+      default:
+        cout << "Wrong choice\n";
+    }
+  } while (choice != 4);
+
+  return 0;
+}
