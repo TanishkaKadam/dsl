@@ -1,0 +1,65 @@
+def get_max(arr):
+    
+    max_element = arr[0]
+    for num in arr:
+        if num > max_element:
+            max_element = num
+    return max_element
+
+
+def count_sort(arr, place):
+   
+    n = len(arr)
+    output = [0] * n
+    count = [0] * 10
+    for i in range(n):
+        index = (int) ((arr[i] / place) % 10)
+        count[index] += 1
+    for i in range(1, 10):
+        count[i] += count[i - 1]
+    for i in range(n - 1, -1, -1):
+        index = (int) ((arr[i] / place) % 10)
+        idx = count[index] - 1
+        output[idx] = arr[i]
+        count[index] -= 1
+    
+    arr[:] = output[:]
+
+
+def radix_sort(arr):
+   
+    max_element = get_max(arr)
+    place_value = 1
+    while max_element > 0:
+        count_sort(arr, place_value)
+        max_element //= 10
+        place_value *= 10
+
+
+def main():
+   
+    n = int(input("Enter the number of students: "))
+
+ 
+    percentages = []
+
+    
+    print("Enter percentage of students:")
+    for i in range(n):
+        percentage = float(input())
+        percentages.append(percentage)
+
+   
+    radix_sort(percentages)
+
+  
+    print("\nMarks in ascending order: \n", percentages)
+
+   
+    print("Top 5 marks: ")
+    for i in range(n - 1, n - 6, -1):
+        print(percentages[i])
+
+
+if __name__ == "__main__":
+    main()
