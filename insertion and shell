@@ -1,0 +1,47 @@
+def insertion_sort(smarks):
+    for i in range(1, len(smarks)):
+        for j in range(i, 0, -1):
+            if smarks[j] < smarks[j - 1]:
+                smarks[j], smarks[j - 1] = smarks[j - 1], smarks[j]
+
+
+def shell_sort(smarks):
+    gap = len(smarks) // 2
+    while gap > 0:
+        for i in range(gap, len(smarks)):
+            current = smarks[i]
+            j = i
+            while j >= gap and current < smarks[j - gap]:
+                smarks[j] = smarks[j - gap]
+                j = j - gap
+            smarks[j] = current
+        gap = gap // 2
+
+
+smarks = []
+
+n = int(input("Enter number of students: "))
+
+print("Enter marks of students: ")
+
+for i in range(n):
+    m = float(input())
+    smarks.append(m)
+
+print("\n1. Insertion Sort\n2. Shell Sort\nEnter your choice:")
+
+ch = int(input())
+
+if ch == 1:
+    insertion_sort(smarks)
+elif ch == 2:
+    shell_sort(smarks)
+else:
+    print("Invalid choice")
+
+print("Marks in ascending order: ")
+print(smarks)
+print("Top 5 marks: ")
+
+for i in range(n - 1, n - 6, -1):
+    print(smarks[i])
