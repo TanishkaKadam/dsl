@@ -1,0 +1,27 @@
+def main():
+
+        n = int(input("Enter the number of students: "))
+
+        scores = [int(input(f"Enter the score of student {i + 1}: ")) for i in range(n)]
+
+        avg = sum(scores) / n 
+        highest = max(scores) 
+        lowest = min(scores)
+        absent_count = scores.count(0)
+        most_frequent = max(set(scores),  key=scores.count)
+
+        print(f"Average score of the class: {avg:.3f}")
+
+        print(f"Highest score: {highest}")
+
+        print(f"Lowest score: {lowest}")
+
+        print(f"Number of absent students: {absent_count}")
+
+        print(f"Score with the highest frequency: {most_frequent}")
+
+
+
+if __name__ == "__main__":
+
+    main()
