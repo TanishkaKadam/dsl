@@ -1,113 +1,105 @@
-/*  
-Construct an expression tree from the given prefix expression eg. +--a*bc/def and traverse it using postorder traversal (non recursive) and then delete the entire tree. 
-
-*/
+//Construct an expression tree from the given prefix expression eg.abc/def and traverse it using postorder traversal (non recursive) and then delete the entire tree
 
 #include <iostream>
 #include <stack>
 using namespace std;
-
-struct TreeNode {
-    char data;
-    TreeNode* left;
-    TreeNode* right;
+ 
+// Node structure for expression tree
+struct Node {
+        	string data;
+        	Node* left;
+        	Node* right;
+        	Node(string value): data(value), left(nullptr), right(nullptr) {}
 };
-TreeNode* newNode(char data) {
-    TreeNode* node = new TreeNode;
-    node->data = data;
-    node->left = node->right = NULL;
-    return node;
+ 
+// Function to check if a character is an operand
+bool isoperand(char c) {
+        	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 }
-TreeNode* constructExpressionTree(string prefix) {
-    stack<TreeNode*> s;
-    for (int i = prefix.length() - 1; i >= 0; i--) {
-        char c = prefix[i];
-        if (isdigit(c) || isalpha(c)) {
-            TreeNode* node = newNode(c);
-            s.push(node);
-        }
-        else {
-            TreeNode* node = newNode(c);
-            node->left = s.top();
-            s.pop();
-            node->right = s.top();
-            s.pop();
-            s.push(node);
-        }
-    }
-    return s.top();
+ 
+// Function to construct an expression tree from prefix expression
+Node* constructExpressionTree(string prefixExpression) {
+        	stack<Node*> st;
+ 
+        	int length = prefixExpression.length();
+ 
+        	// Traverse the prefix expression in reverse order
+        	for (int i = length - 1; i >= 0; i--) {
+                    	char ch = prefixExpression[i];
+ 
+                    	if (isoperand(ch)) {
+                                	string operand(1, ch);
+                                	st.push(new Node (operand));
+                    	} else {
+                                	Node* operand1 = st.top();
+                                	st.pop();
+                                	Node* operand2 = st.top();
+                    	st.pop();
+                                	string op(1, ch);
+                                	string expression = operand1->data + operand2->data + prefixExpression[i];
+                                	Node* operatorNode = new Node (expression);
+                                	operatorNode->left = operand1;
+                                	operatorNode->right = operand2;
+                                	st.push(operatorNode);
+                    	}
+        	}
+        	return st.top();
 }
-void postorderTraversal(TreeNode* root) {
-    stack<TreeNode*> s;
-    TreeNode* lastNodeVisited = NULL;
-    while (!s.empty() || root != NULL) {
-        if (root != NULL) {
-            s.push(root);
-            root = root->left;
-        }
-        else {
-            TreeNode* peekNode = s.top();
-            if (peekNode->right != NULL && lastNodeVisited != peekNode->right) root = peekNode->right;
-            else {
-                cout << peekNode->data << " ";
-                lastNodeVisited = peekNode;
-                s.pop();
-            }
-        }
-    }
+ 
+// Function to perform postorder traversal (non-recursive) on the expression tree
+void postorderTraversal(Node* root) {
+        	if (root == nullptr)
+                    	return;
+ 
+        	stack<Node*> st;
+        	Node* current = root;
+        	Node* lastVisited = nullptr;
+ 
+        	while (current || !st.empty()) {
+                    	if (current) {
+                                	st.push(current);
+                                	current = current->left;
+                    	}
+                    	else {
+                                	Node* topNode = st.top();
+                                	if (topNode->right && topNode->right != lastVisited) {
+                                            	current = topNode->right;
+                                	} else {
+                                            	cout<<"\n";
+                                            	cout << topNode->data << " ";
+                                            	lastVisited = topNode;
+                                            	st.pop();
+                                	}
+                    	}
+        	}
 }
-void deleteTree(TreeNode* root) {
-    if (root == NULL) return;
-    deleteTree(root->left);
-    deleteTree(root->right);
-    delete root;
+ 
+// Function to delete the entire expression tree
+void deleteExpressionTree(Node* root) {
+        	if (root == nullptr)
+                    	return;
+ 
+        	deleteExpressionTree(root->left);
+        	deleteExpressionTree(root->right);
+        	delete root;
 }
-
+ 
 int main() {
-    int choice;
-    string prefix;
-    TreeNode* root = NULL;
-    do {
-        cout << "Menu" << endl;
-        cout << "1. Enter prefix expression" << endl;
-        cout << "2. Postorder traversal" << endl;
-        cout << "3. Delete tree" << endl;
-        cout << "4. Exit" << endl;
-        cout << "Enter your choice: ";
-        cin >> choice;
-        switch (choice) {
-            case 1:
-                cout << "Enter prefix expression: ";
-                cin.ignore();
-                getline(cin, prefix);
-                root = constructExpressionTree(prefix);
-                break;
-            case 2:
-                if (root == NULL) cout << "Tree not constructed yet" << endl;
-                else {
-                    cout << "Postorder traversal of expression tree: ";
-                    postorderTraversal(root);
-                    cout << endl;
-                }
-                break;
-            case 3:
-                if (root == NULL) cout << "Tree not constructed yet" << endl;
-                else {
-                    deleteTree(root);
-                    root = NULL;
-                    cout << "Tree deleted" << endl;
-                }
-                break;
-            case 4:
-                cout << "Exiting program" << endl;
-                break;
-            default:
-                cout << "Invalid choice" << endl;
-                break;
-        }
-        cout << endl;
-    } while (choice != 4);
-    return 0;
+        	string prefixExpression;
+ 
+        	cout << "Enter the prefix expression: ";
+        	cin >> prefixExpression;
+ 
+        	Node* root = constructExpressionTree(prefixExpression);
+ 
+        	cout << "Postorder Traversal: ";
+        	postorderTraversal(root);
+ 
+        	cout << endl;
+ 
+        	deleteExpressionTree(root);
+ 
+        	return 0;
 }
 
 
